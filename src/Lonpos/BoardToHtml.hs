@@ -10,6 +10,7 @@
 --
 
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE LambdaCase #-}
 module Lonpos.BoardToHtml
 (
   boardToHtml
@@ -51,8 +52,8 @@ boardToSvg board
     $ do
       forM_ boardLoc $ \pos -> cell pos (board Array.! pos)
 
-cell :: (Int, Int) -> Colour -> Svg
-cell (xpos, ypos) colour
+cell :: (Int, Int) -> Piece -> Svg
+cell (xpos, ypos) piece
   = svg ! version "1.1"
         ! width "1"
         ! height "1"
@@ -64,7 +65,23 @@ cell (xpos, ypos) colour
         $ do
           circle
             ! r "10"
-            ! (if colour == Black
+            ! (if piece == Board
                then A.style "stroke:Black;stroke-width:0.01" -- TODO
-               else fill (fromString $ show colour)
+               else fill (fromString $ pieceColor piece)
               )
+
+
+pieceColor :: Piece -> String
+pieceColor = \case
+  Board -> "black"
+  F -> "beige"
+  B -> "red"
+  G -> "lightblue"
+  S -> "lightgreen"
+  I -> "yellow"
+  J -> "blueviolet"
+  H -> "deepPink"
+  R -> "brown"
+  E -> "green"
+  C -> "blue"
+  D -> "lightPink"

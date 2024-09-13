@@ -18,28 +18,31 @@ where
 import Data.Array as Array
 import Data.SBV
 
-data Colour
-  = Black | Beige | Red | LightBlue | LightGreen | Yellow
-  | BlueViolet | DeepPink | Brown | Green | Blue | LightPink
+-- This only covers the lonpos200+ pieces.
+-- There are other lonpos puzzles with additional pieces
+
+data Piece
+  = Board | B | C | D | E | F | G | H | I | J | R | S
   deriving Enum
 
-mkSymbolicEnumeration ''Colour
+mkSymbolicEnumeration ''Piece
 
--- Black is the empty board.
-allPieces :: [ Colour ]
-allPieces = [Beige .. LightPink]
+-- Board is the empty board.
+-- lonpos200+
+allPieces :: [ Piece ]
+allPieces = [ B, C, D, E, F, G, H, I, J, R, S ]
 
 type Location = (Int, Int)
-type Board = Array.Array Location Colour
+type Board = Array.Array Location Piece
 
 boardBounds :: ((Int, Int), (Int, Int))
 boardBounds = ((0, 0), (9, 9))
 
-testBoard :: Board
-testBoard = listArray boardBounds $ repeat Black
+emptyBoard :: Board
+emptyBoard = listArray boardBounds $ repeat Board
 
 allLocations :: [(Int,Int)]
-allLocations = Array.indices testBoard
+allLocations = Array.indices emptyBoard
 
 isOnBoard :: (Int, Int) -> Bool
 isOnBoard (x, y) =
@@ -54,40 +57,28 @@ boardLoc = filter isOnBoard allLocations
 borderLoc :: [(Int, Int)]
 borderLoc = filter ( not . isOnBoard) allLocations
 
-pieceSize :: Colour -> Int
-pieceSize = \case
-  Black -> 0
-  Beige -> 3
-  Red -> 5
-  LightBlue -> 5
-  LightGreen -> 4
-  Yellow -> 5
-  BlueViolet -> 4
-  DeepPink -> 5
-  Brown -> 4
-  Green -> 5
-  Blue -> 5
-  LightPink -> 5
+pieceSize :: Piece -> Int
+pieceSize c = (length $ head $ pieceShapes c) + 1
 
 -- Shapes don't need to list the anker point which is at (0,0)
 type Shape = [ (Int, Int) ]
 
 -- All possible rotations and flips.
-pieceShapes :: Colour -> [ Shape ]
+pieceShapes :: Piece -> [ Shape ]
 pieceShapes = \case
-  Black -> []
-  Beige -> allAngles [(1,0), (0,1)]
-  Red -> allOrientations [ (0,1), (0,2), (1,1), (1,2)]
-  LightBlue -> allAngles [(1,0), (2,0), (0,1), (0,2)]
-  LightGreen -> allOrientations [(-1,0), (0,1), (1,0)]
-  Yellow -> allAngles [(1,1), (1,0), (-1,1) , (-1,0)]
-  BlueViolet -> [ blueViolet, rot90 blueViolet ] 
-    where blueViolet = [(1,0), (2,0), (3,0)]
-  DeepPink -> allOrientations [(-1,-1),(0,-1),(1,0),(1,1)]
-  Brown -> allOrientations [(0,-1), (1,0), (1,1)]
-  Green -> allOrientations [(-1,1), (0,1), (1,0), (2,0)]
-  Blue -> allOrientations [(1,0), (1,1), (1,2), (1,3)]
-  LightPink -> allOrientations [(1,-1), (1,0), (1,1), (1,2)]
+  Board -> []
+  F -> allAngles [(1,0), (0,1)]
+  B -> allOrientations [ (0,1), (0,2), (1,1), (1,2)]
+  G -> allAngles [(1,0), (2,0), (0,1), (0,2)]
+  S -> allOrientations [(-1,0), (0,1), (1,0)]
+  I -> allAngles [(1,1), (1,0), (-1,1) , (-1,0)]
+  J -> [ pieceJ, rot90 pieceJ ]
+    where pieceJ = [(1,0), (2,0), (3,0)]
+  H -> allOrientations [(-1,-1), (0,-1), (1,0), (1,1)]
+  R -> allOrientations [(0,-1), (1,0), (1,1)]
+  E -> allOrientations [(-1,1), (0,1), (1,0), (2,0)]
+  C -> allOrientations [(1,0), (1,1), (1,2), (1,3)]
+  D -> allOrientations [(1,-1), (1,0), (1,1), (1,2)]
 
 rot90 :: Shape -> Shape
 rot90 = map (\(dx, dy) -> (-dy, dx))
