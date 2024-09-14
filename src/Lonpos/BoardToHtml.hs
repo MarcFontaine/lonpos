@@ -60,10 +60,11 @@ cell (xpos, ypos) piece
         ! x (toValue xpos)
         ! y (toValue ypos)
         ! viewbox "-10 -10 20 20"
-        ! preserveaspectratio "XMidYMid"
+        ! preserveaspectratio "xMidYMid"
         ! transform "rotate(45 5 5)"
         $ do
           circle
+            ! id_ (fromString ("board:(" ++ show xpos ++ "," ++ show ypos ++ ")"))
             ! r "10"
             ! (if piece == Board
                then A.style "stroke:Black;stroke-width:0.01" -- TODO
