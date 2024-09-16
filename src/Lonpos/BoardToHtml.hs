@@ -3,14 +3,14 @@
 -- Module      :  Lonpos.BoardToHtml
 -- Copyright   :  (c) Marc Fontaine 2024
 -- License     :  BSD3
--- 
+--
 -- Maintainer  :  Marc.Fontaine@gmx.de
 -- Stability   :  experimental
 -- Portability :  GHC-only
 --
 
+{-# LANGUAGE LambdaCase        #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE LambdaCase #-}
 module Lonpos.BoardToHtml
 (
   boardToHtml
@@ -18,17 +18,17 @@ module Lonpos.BoardToHtml
   , renderBoardToHtml
 )
 where
-import Control.Monad (forM_)
-import qualified Data.Array as Array ((!))
-import Data.String
+import           Control.Monad                   (forM_)
+import qualified Data.Array                      as Array ((!))
+import           Data.String
 
-import Text.Blaze.Svg  
-import Text.Blaze.Svg11 as S
-import Text.Blaze.Svg11.Attributes as A
-import Text.Blaze.Html5 as H
-import Text.Blaze.Html.Renderer.Pretty (renderHtml)
+import           Text.Blaze.Html.Renderer.Pretty (renderHtml)
+import           Text.Blaze.Html5                as H
+import           Text.Blaze.Svg
+import           Text.Blaze.Svg11                as S
+import           Text.Blaze.Svg11.Attributes     as A
 
-import Lonpos.Types
+import           Lonpos.Types
 
 renderBoardToHtml :: Board -> String
 renderBoardToHtml = renderHtml . boardToHtml

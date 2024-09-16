@@ -3,7 +3,7 @@
 -- Module      :  Lonpos.SolveSBV
 -- Copyright   :  (c) Marc Fontaine 2024
 -- License     :  BSD3
--- 
+--
 -- Maintainer  :  Marc.Fontaine@gmx.de
 -- Stability   :  experimental
 -- Portability :  GHC-only
@@ -11,11 +11,11 @@
 
 module Lonpos.SolveSBV
 where
-import Data.SBV 
-import qualified Data.Array as Array
-import Data.Array (Array, (!))
+import           Data.Array   (Array, (!))
+import qualified Data.Array   as Array
+import           Data.SBV
 
-import Lonpos.Types
+import           Lonpos.Types
 
 solvePuzzle :: IO Board
 solvePuzzle = do
@@ -23,7 +23,7 @@ solvePuzzle = do
   result <- satWith z3 {verbose = False, timing = PrintTiming} board
   case getModelAssignment result of
     Left err -> do
-      print err 
+      print err
       error "no result"
     Right (False, res) -> return $ parseResult res
     _ -> error "probable result ?"
@@ -53,7 +53,7 @@ makeBoard = do
   let
     forAll s p = sAnd $ map p s
     forAllPieces = forAll allPieces
-    
+
     blackBorder = forAll borderLoc $ \loc -> (board ! loc) .== literal Board
     borderNotAnker = forAll borderLoc $ \loc -> (sAnkers ! loc) .== sFalse
     allPieceCounts = forAllPieces (\c -> colourCount c $ pieceSize c)
@@ -70,7 +70,7 @@ makeBoard = do
 
     matchShape (x0,y0) colour shape
       = forAll shape $ \(dx,dy) -> isAt board colour (x0 + dx, y0 + dy)
-  
+
     allPiecesShape = forAll boardLoc $ \loc ->
       forAllPieces $ \p -> isPieceAnker p loc
 

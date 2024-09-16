@@ -3,20 +3,20 @@
 -- Module      :  Lonpos.Types
 -- Copyright   :  (c) Marc Fontaine 2024
 -- License     :  BSD3
--- 
+--
 -- Maintainer  :  Marc.Fontaine@gmx.de
 -- Stability   :  experimental
 -- Portability :  GHC-only
 --
 
+{-# LANGUAGE DeriveAnyClass  #-}
+{-# LANGUAGE LambdaCase      #-}
 {-# LANGUAGE TemplateHaskell #-}
-{-# LANGUAGE DeriveAnyClass #-}
-{-# LANGUAGE LambdaCase #-}
 module Lonpos.Types
 where
 
-import Data.Array as Array
-import Data.SBV
+import           Data.Array as Array
+import           Data.SBV
 
 -- This only covers the lonpos200+ pieces.
 -- There are other lonpos puzzles with additional pieces
@@ -49,7 +49,7 @@ isOnBoard (x, y) =
      (x + y >= 4)
   && (x + y <= 14)
   && (x - y < 5)
-  && (y - x < 5)  
+  && (y - x < 5)
 
 boardLoc :: [(Int, Int)]
 boardLoc = filter isOnBoard allLocations
