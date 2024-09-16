@@ -58,7 +58,9 @@ makeBoard = do
     borderNotAnker = forAll borderLoc $ \loc -> (sAnkers ! loc) .== sFalse
     allPieceCounts = forAllPieces (\c -> colourCount c $ pieceSize c)
     colourCount c n = pbExactly (map (isAt board c) boardLoc ) n
-          
+
+    boardNotBlack = forAll boardLoc $ \loc -> sNot ((board ! loc) .== literal Board)
+
     allPiecesAreAnkered = forAllPieces isAnkeredPiece
     isAnkeredPiece c = pbExactly (map (isAnkerPoint c) boardLoc ) 1
     isAnkerPoint c loc = isAt board c loc .&& (sAnkers ! loc)
@@ -76,9 +78,10 @@ makeBoard = do
   constrain allPieceCounts
   constrain blackBorder
   constrain borderNotAnker
+  constrain boardNotBlack
   constrain allPiecesAreAnkered
   constrain allPiecesShape
-  constrain $ challenge100 board
+--  constrain $ challenge100 board
   return ()
 
 isAt :: SBoard -> Piece -> (Int, Int) -> SBool
@@ -86,12 +89,8 @@ isAt board c loc = if isOnBoard loc
   then (board ! loc) .== literal c
   else sFalse
 
-
--- (0,4) is upper left corner
--- (1,3) is right of (0,4)
-
--- first result: 5.5s
--- 45 solutions is 4 minutes
+-- --- first result: 2s -- recheck !
+-- total : 45 solutions in 4 minutes
 challenge100 :: SBoard -> SBool
 challenge100 b = sAnd [
     isAt b F (0,4)
