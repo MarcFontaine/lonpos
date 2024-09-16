@@ -58,7 +58,7 @@ borderLoc :: [(Int, Int)]
 borderLoc = filter ( not . isOnBoard) allLocations
 
 pieceSize :: Piece -> Int
-pieceSize c = (length $ head $ pieceShapes c) + 1
+pieceSize c = length (head $ pieceShapes c) + 1
 
 -- Shapes don't need to list the anker point which is at (0,0)
 type Shape = [ (Int, Int) ]
@@ -91,4 +91,4 @@ allAngles :: Shape -> [ Shape ]
 allAngles s = [s, rot90 s, rot90 $ rot90 s, rot90 $ rot90 $ rot90 s]
 
 allOrientations :: Shape -> [ Shape ]
-allOrientations s = allAngles s ++ (allAngles $ flipShape s)
+allOrientations s = allAngles s ++ allAngles ( flipShape s )

@@ -71,9 +71,8 @@ makeBoard = do
     matchShape (x0,y0) colour shape
       = forAll shape $ \(dx,dy) -> isAt board colour (x0 + dx, y0 + dy)
   
-    allPiecesShape = forAll boardLoc $ \loc -> (
+    allPiecesShape = forAll boardLoc $ \loc ->
       forAllPieces $ \p -> isPieceAnker p loc
-      )
 
   constrain allPieceCounts
   constrain blackBorder
