@@ -80,7 +80,7 @@ makeBoard = do
   constrain boardNotBlack
   constrain allPiecesAreAnkered
   constrain allPiecesShape
---  constrain $ challenge100 board
+  constrain $ challenge100 board
   return ()
 
 isAt :: SBoard -> Piece -> (Int, Int) -> SBool
@@ -88,8 +88,9 @@ isAt board c loc = if isOnBoard loc
   then (board ! loc) .== literal c
   else sFalse
 
--- --- first result: 2s -- recheck !
--- total : 45 solutions in 4 minutes
+-- First result:
+-- *** SBV: Elapsed time: 1.388s
+-- Total : 45 solutions in 4 minutes
 challenge100 :: SBoard -> SBool
 challenge100 b = sAnd [
     isAt b F (0,4)
@@ -102,7 +103,7 @@ challenge100 b = sAnd [
   , isAt b E (2,4)
   ]
 
--- result: 17s
+-- Result: 17s
 challenge99 :: SBoard -> SBool
 challenge99 b = sAnd [
     isAt b B (0,4)
@@ -113,4 +114,37 @@ challenge99 b = sAnd [
   , isAt b H (2,3)
   , isAt b H (3,2)
   , isAt b H (1,3)
+  ]
+
+-- Result:
+-- *** SBV: Elapsed time: 54.157s
+
+challenge98 :: SBoard -> SBool
+challenge98 b = sAnd [
+    isAt b B (0,4)
+  , isAt b B (1,3)
+  , isAt b B (1,4)
+  , isAt b B (2,3)
+  , isAt b S (1,5)
+  , isAt b S (2,5)
+  , isAt b S (3,5)
+  , isAt b S (2,6)
+  ]
+-- Result:
+-- *** SBV: Elapsed time: 1.090s
+challenge97 :: SBoard -> SBool
+challenge97 b = sAnd [
+    isAt b R (0,4)
+  , isAt b R (1,3)
+  , isAt b R (1,4)
+  , isAt b R (2,3)
+  , isAt b C (1,5)
+  , isAt b C (2,5)
+  , isAt b C (3,5)
+  , isAt b C (4,5)
+  , isAt b C (4,4)
+  , isAt b H (2,6)
+  , isAt b H (3,6)
+  , isAt b H (3,7)
+  , isAt b H (4,8)
   ]
