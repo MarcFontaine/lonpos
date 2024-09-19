@@ -80,7 +80,7 @@ makeBoard = do
   constrain boardNotBlack
   constrain allPiecesAreAnkered
   constrain allPiecesShape
-  constrain $ challenge100 board
+  constrain $ challenge96 board
   return ()
 
 isAt :: SBoard -> Piece -> (Int, Int) -> SBool
@@ -130,6 +130,7 @@ challenge98 b = sAnd [
   , isAt b S (3,5)
   , isAt b S (2,6)
   ]
+
 -- Result:
 -- *** SBV: Elapsed time: 1.090s
 challenge97 :: SBoard -> SBool
@@ -147,4 +148,23 @@ challenge97 b = sAnd [
   , isAt b H (3,6)
   , isAt b H (3,7)
   , isAt b H (4,8)
+
+-- Result:
+-- *** SBV: Elapsed time: 2.514s
+challenge96 :: SBoard -> SBool
+challenge96 b = sAnd [
+    isAt b S (0,4)
+  , isAt b S (1,3)
+  , isAt b S (1,4)
+  , isAt b S (1,5)
+  , isAt b E (2,2)
+  , isAt b E (3,1)
+  , isAt b E (2,3)
+  , isAt b E (3,2)
+  , isAt b E (2,4)
+  , isAt b B (2,5)
+  , isAt b B (2,6)
+  , isAt b B (3,5)
+  , isAt b B (3,6)
+  , isAt b B (3,7)
   ]
